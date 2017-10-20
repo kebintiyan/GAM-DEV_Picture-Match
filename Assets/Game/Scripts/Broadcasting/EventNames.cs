@@ -19,6 +19,7 @@ public class EventNames {
 	public const string ON_REQUEST_TILES = "ON_REQUEST_TILES";
 	public const string ON_TILE_CLICKED = "ON_TILE_CLICKED";
 	public const string ON_TILES_CHECKED = "ON_TILES_CHECKED";
+	public const string ON_TOGGLE_ACTIVE = "ON_TOGGLE_ACTIVE";
 }
 
 

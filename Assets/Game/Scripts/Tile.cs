@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour {
 	[SerializeField] Text questionText;
 	[SerializeField] int tileType;
 	private bool active;
+	private bool matched;
 
 	private bool removeInstance;
 
@@ -17,6 +18,9 @@ public class Tile : MonoBehaviour {
 		active = true;
 		tileImage.enabled = false;
 		removeInstance = false;
+		matched = false;
+
+		EventBroadcaster.Instance.AddObserver (EventNames.ON_TOGGLE_ACTIVE, this.OnToggleActive);
 	}
 	
 	// Update is called once per frame
@@ -29,8 +33,8 @@ public class Tile : MonoBehaviour {
 
 	public void OnClick() {
 		if (active) {
-			tileImage.enabled = !tileImage.enabled;
-			questionText.enabled = !questionText.enabled;
+			tileImage.enabled = true;
+			questionText.enabled = false;
 			active = false;
 
 			Parameters parameters = new Parameters ();
@@ -46,8 +50,14 @@ public class Tile : MonoBehaviour {
 
 		if (!match) {
 			this.active = true;
-			this.tileImage.enabled = !tileImage.enabled;
-			this.questionText.enabled = !questionText.enabled;
+			this.tileImage.enabled = false;
+			this.questionText.enabled = questionText.enabled = true;
+		}
+		else {
+			this.active = false;
+			matched = true;
+			tileImage.enabled = true;
+			questionText.enabled = false;
 		}
 
 		removeInstance = true;
@@ -55,7 +65,10 @@ public class Tile : MonoBehaviour {
 	}
 
 	public void OnToggleActive() {
-		
+		Debug.Log ("Toggled");
+		if (!matched) {
+			this.active = !this.active;
+		}
 	}
 
 	IEnumerator RemoveObserver() {

@@ -71,7 +71,7 @@ public class TileManager : MonoBehaviour {
 			clicked++;
 		}
 		else if (clicked == 1){
-			//EventBroadcaster.Instance.PostEvent()
+			EventBroadcaster.Instance.PostEvent (EventNames.ON_TOGGLE_ACTIVE);
 			clicked2 = parameters.GetIntExtra (KeyNames.KEY_TILE_TYPE, 1);
 			clicked = 0;
 
@@ -84,8 +84,10 @@ public class TileManager : MonoBehaviour {
 				// MATCHED
 				Parameters checkParams = new Parameters ();
 				checkParams.PutExtra (KeyNames.KEY_IS_MATCH, true);
+				EventBroadcaster.Instance.PostEvent (EventNames.ON_TOGGLE_ACTIVE);
 				EventBroadcaster.Instance.PostEvent (EventNames.ON_TILES_CHECKED, checkParams);
 				EventBroadcaster.Instance.PostEvent (EventNames.ON_UPDATE_SCORE);
+
 
 				tileNum -= 2;
 				if (tileNum == 0) {
@@ -99,6 +101,9 @@ public class TileManager : MonoBehaviour {
 		Parameters checkParams = new Parameters ();
 		checkParams.PutExtra (KeyNames.KEY_IS_MATCH, false);
 		yield return new WaitForSeconds(0.5f);
+		EventBroadcaster.Instance.PostEvent (EventNames.ON_TOGGLE_ACTIVE);
 		EventBroadcaster.Instance.PostEvent (EventNames.ON_TILES_CHECKED, checkParams);
+
+
 	}
 }

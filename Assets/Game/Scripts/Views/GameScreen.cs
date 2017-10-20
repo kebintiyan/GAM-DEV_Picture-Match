@@ -32,7 +32,7 @@ public class GameScreen : View {
 	// Use this for initialization
 	void Start () {
 		//tileManager = new TileManager ();
-		currentLevel = 1;
+		currentLevel = 5;
 		requestTiles ();
 		InstantiateTiles ();
 
