@@ -11,6 +11,8 @@ public class EventNames {
 	public const string ON_WRONG_MATCH = "ON_WRONG_MATCH";
 	public const string ON_INCREASE_LEVEL = "ON_INCREASE_LEVEL";
 
+	public const string ON_FINISH_LEVEL = "ON_FINISH_LEVEL";
+
 	public const string ON_PICTURE_CLICKED = "ON_PICTURE_CLICKED";
 
 	public const string ON_UNPAUSE = "ON_UNPAUSE";

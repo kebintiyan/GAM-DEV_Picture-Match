@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TileManager {
+public class TileManager : MonoBehaviour {
 
 	public const int TILE_TYPE_1 = 1;
 	public const int TILE_TYPE_2 = 2;
@@ -18,14 +18,25 @@ public class TileManager {
 	int clicked;
 	int clicked1;
 	int clicked2;
+	int tileNum;
 
-	public TileManager() {
+	bool notMatch = false;
+
+	void Start() {
 		clicked = 0;
 		EventBroadcaster.Instance.AddObserver (EventNames.ON_TILE_CLICKED, this.OnTileClicked);
 	}
 
-	public int[] RequestTiles(int tileNum) {
+	void Update() {
+		Debug.Log ("Not Match: " + notMatch);
+		if (notMatch) {
+			notMatch = false;
+			StartCoroutine (NotMatch ());
+		}
+	}
 
+	public int[] RequestTiles(int tileNum) {
+		this.tileNum = tileNum;
 
 		int numToGenerate = tileNum / 2;
 
@@ -55,18 +66,38 @@ public class TileManager {
 	}
 
 	public void OnTileClicked(Parameters parameters) {
-		Debug.Log ("Tile Clicked");
 		if (clicked == 0) {
-			int clicked1 = parameters.GetIntExtra (KeyNames.KEY_TILE_TYPE, 1);
+			clicked1 = parameters.GetIntExtra (KeyNames.KEY_TILE_TYPE, 1);
 			clicked++;
 		}
-		else {
-			int clicked2 = parameters.GetIntExtra (KeyNames.KEY_TILE_TYPE, 1);
+		else if (clicked == 1){
+			clicked2 = parameters.GetIntExtra (KeyNames.KEY_TILE_TYPE, 1);
 			clicked = 0;
 
-			Parameters checkParams = new Parameters ();
-			checkParams.PutExtra (KeyNames.KEY_IS_MATCH, clicked1 == clicked2);
-			EventBroadcaster.Instance.PostEvent (EventNames.ON_TILES_CHECKED, checkParams);
+			Debug.Log ("Clicked1: " + clicked1 + " Clicked2: " + clicked2);
+
+			if (clicked1 != clicked2) {
+				notMatch = true;
+			}
+			else {
+				// MATCHED
+				Parameters checkParams = new Parameters ();
+				checkParams.PutExtra (KeyNames.KEY_IS_MATCH, true);
+				EventBroadcaster.Instance.PostEvent (EventNames.ON_TILES_CHECKED, checkParams);
+				EventBroadcaster.Instance.PostEvent (EventNames.ON_UPDATE_SCORE);
+
+				tileNum -= 2;
+				if (tileNum == 0) {
+					EventBroadcaster.Instance.PostEvent (EventNames.ON_FINISH_LEVEL);
+				}
+			}
 		}
+	}
+
+	IEnumerator NotMatch() {
+		Parameters checkParams = new Parameters ();
+		checkParams.PutExtra (KeyNames.KEY_IS_MATCH, false);
+		yield return new WaitForSeconds(0.5f);
+		EventBroadcaster.Instance.PostEvent (EventNames.ON_TILES_CHECKED, checkParams);
 	}
 }

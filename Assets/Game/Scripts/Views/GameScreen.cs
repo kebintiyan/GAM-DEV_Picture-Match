@@ -16,8 +16,8 @@ public class GameScreen : View {
 	[SerializeField] Button tile7;
 	[SerializeField] Button tile8;
 	[SerializeField] Button tile9;
+	[SerializeField] TileManager tileManager;
 
-	private TileManager tileManager;
 	private int[] tiles;
 	private Button[] tileObjects;
 	private float timeLeft;
@@ -27,8 +27,8 @@ public class GameScreen : View {
 
 	// Use this for initialization
 	void Start () {
-		tileManager = new TileManager ();
-		currentLevel = 5;
+		//tileManager = new TileManager ();
+		currentLevel = 1;
 		requestTiles ();
 		InstantiateTiles ();
 
@@ -37,6 +37,7 @@ public class GameScreen : View {
 		paused = false;
 
 		EventBroadcaster.Instance.AddObserver (EventNames.ON_UNPAUSE, this.unpause);
+		EventBroadcaster.Instance.AddObserver (EventNames.ON_FINISH_LEVEL, this.OnFinishLevel);
 
 	}
 	
@@ -48,8 +49,14 @@ public class GameScreen : View {
 	}
 
 	private void updateTime() {
-		timeLeft -= Time.deltaTime;
-		timeLeftText.text = timeLeft.ToString();
+		if (timeLeft > 0) {
+			timeLeft -= Time.deltaTime;
+			timeLeftText.text = timeLeft.ToString();
+		}
+		else {
+			gameOver = true;
+			ViewHandler.Instance.Show (ViewNames.RESULT_SCREEN_NAME);
+		}
 	}
 
 	private void requestTiles() {
@@ -81,7 +88,6 @@ public class GameScreen : View {
 		int y = 30;
 
 		for (int i = 0; i < tiles.Length; i++) {
-			Debug.Log (tiles [i]);
 			Button tile = null;
 			if (tiles[i] == TileManager.TILE_TYPE_1) {
 				tile = Instantiate (tile1);
@@ -134,5 +140,16 @@ public class GameScreen : View {
 
 	public void unpause() {
 		paused = false;
+	}
+
+	public void OnFinishLevel() {
+		Debug.Log ("Level Finished");
+		for (int i = 0; i < tileObjects.Length; i++) {
+			Destroy (tileObjects [i]);
+		}
+
+		currentLevel = Mathf.Min(currentLevel + 1, 5);
+		requestTiles ();
+		InstantiateTiles ();
 	}
 }
