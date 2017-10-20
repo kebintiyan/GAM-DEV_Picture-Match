@@ -361,7 +361,12 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1924347540141610, guid: 17e85a72ddc28450f931b5aa387385b4, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114914593301899688, guid: 17e85a72ddc28450f931b5aa387385b4,
+        type: 2}
+      propertyPath: gameTime
+      value: 120
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 17e85a72ddc28450f931b5aa387385b4, type: 2}
