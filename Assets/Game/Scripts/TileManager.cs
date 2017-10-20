@@ -71,6 +71,7 @@ public class TileManager : MonoBehaviour {
 			clicked++;
 		}
 		else if (clicked == 1){
+			//EventBroadcaster.Instance.PostEvent()
 			clicked2 = parameters.GetIntExtra (KeyNames.KEY_TILE_TYPE, 1);
 			clicked = 0;
 

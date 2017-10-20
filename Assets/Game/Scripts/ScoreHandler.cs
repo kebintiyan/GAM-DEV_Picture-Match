@@ -10,8 +10,7 @@ public class ScoreHandler : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		scoreText.text = currentScore.ToString();
-		EventBroadcaster.Instance.AddObserver (EventNames.ON_UPDATE_SCORE, this.OnUpdateScore);
+		
 	}
 	
 	// Update is called once per frame
@@ -19,8 +18,5 @@ public class ScoreHandler : MonoBehaviour {
 		
 	}
 
-	public void OnUpdateScore() {
-		currentScore++;
-		scoreText.text = currentScore.ToString();
-	}
+
 }

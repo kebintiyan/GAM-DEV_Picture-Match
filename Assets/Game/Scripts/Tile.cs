@@ -54,6 +54,10 @@ public class Tile : MonoBehaviour {
 
 	}
 
+	public void OnToggleActive() {
+		
+	}
+
 	IEnumerator RemoveObserver() {
 		yield return new WaitForSeconds (0.1f);
 		EventBroadcaster.Instance.RemoveActionAtObserver(EventNames.ON_TILES_CHECKED, this.OnTilesChecked);

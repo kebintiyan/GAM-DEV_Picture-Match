@@ -262,7 +262,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &815807710
+--- !u!1001 &1192913441
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -359,18 +359,9 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1620745614056320, guid: 17e85a72ddc28450f931b5aa387385b4, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1924347540141610, guid: 17e85a72ddc28450f931b5aa387385b4, type: 2}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114914593301899688, guid: 17e85a72ddc28450f931b5aa387385b4,
-        type: 2}
-      propertyPath: gameTime
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 17e85a72ddc28450f931b5aa387385b4, type: 2}

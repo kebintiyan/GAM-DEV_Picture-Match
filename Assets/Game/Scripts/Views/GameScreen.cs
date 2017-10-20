@@ -7,6 +7,7 @@ public class GameScreen : View {
 
 	[SerializeField] int gameTime = 120;
 	[SerializeField] Text timeLeftText;
+	[SerializeField] Text scoreText;
 	[SerializeField] Button tile1;
 	[SerializeField] Button tile2;
 	[SerializeField] Button tile3;
@@ -24,6 +25,9 @@ public class GameScreen : View {
 	private int currentLevel;
 	private bool paused;
 	private bool gameOver;
+	private int currentScore;
+	private int correctMatches;
+	private int incorrectMatches;
 
 	// Use this for initialization
 	void Start () {
@@ -38,6 +42,13 @@ public class GameScreen : View {
 
 		EventBroadcaster.Instance.AddObserver (EventNames.ON_UNPAUSE, this.unpause);
 		EventBroadcaster.Instance.AddObserver (EventNames.ON_FINISH_LEVEL, this.OnFinishLevel);
+
+		scoreText.text = currentScore.ToString();
+		EventBroadcaster.Instance.AddObserver (EventNames.ON_UPDATE_SCORE, this.OnUpdateScore);
+
+		correctMatches = 0;
+		incorrectMatches = 0;
+		EventBroadcaster.Instance.AddObserver (EventNames.ON_TILES_CHECKED, this.onCheckedMatch);
 
 	}
 	
@@ -55,7 +66,8 @@ public class GameScreen : View {
 		}
 		else {
 			gameOver = true;
-			ViewHandler.Instance.Show (ViewNames.RESULT_SCREEN_NAME);
+			ResultScreen resultScreen = (ResultScreen) ViewHandler.Instance.Show (ViewNames.RESULT_SCREEN_NAME);
+			resultScreen.SetResult (currentLevel, currentScore, correctMatches, incorrectMatches);
 		}
 	}
 
@@ -151,5 +163,23 @@ public class GameScreen : View {
 		currentLevel = Mathf.Min(currentLevel + 1, 5);
 		requestTiles ();
 		InstantiateTiles ();
+	}
+
+	public void OnUpdateScore() {
+		currentScore++;
+		scoreText.text = currentScore.ToString();
+	}
+
+	public void onCheckedMatch(Parameters args) {
+		bool match = args.GetBoolExtra (KeyNames.KEY_IS_MATCH, false);
+
+		if (match) {
+			correctMatches++;
+		}
+		else {
+			incorrectMatches++;
+		}
+
+		Debug.Log ("Correct: " + correctMatches + " Incorrect: " + incorrectMatches);
 	}
 }
